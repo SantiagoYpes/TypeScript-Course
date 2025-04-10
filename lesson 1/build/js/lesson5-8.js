@@ -136,3 +136,54 @@ const monthlyIncomes = {
 for (const stream in monthlyIncomes) {
     console.log(`${stream}: ${monthlyIncomes[stream]}`);
 }
+// Generics
+// Is used when we dont know what type of arguments we are gonna receive when a function is called
+const isObj = (arg) => {
+    return (typeof arg === 'object' && !Array.isArray(arg) && arg !== null);
+};
+const isTrue = (arg) => {
+    if (Array.isArray(arg) && !arg.length) {
+        return { arg, is: false };
+    }
+    if (isObj(arg) && Object.keys(arg).length) {
+        return { arg, is: false };
+    }
+    return { arg, is: !!arg };
+};
+const boolCheck = (arg) => {
+    if (Array.isArray(arg) && !arg.length) {
+        return { arg, is: false };
+    }
+    if (isObj(arg) && Object.keys(arg).length) {
+        return { arg, is: false };
+    }
+    return { arg, is: !!arg };
+};
+const processUser = (user) => {
+    // Logic to process
+    return user;
+};
+// Here we dont have problems because there is a property id
+console.log(processUser({ user: 'Santi', id: 123 }));
+//Now we have problems because id property is missing
+//console.log(processUser({user:'Daniel'}))
+const getUsersProperties = (users, key) => {
+    return users.map(user => user[key]);
+};
+//Example with class
+class StateObject {
+    constructor(value) {
+        this.data = value;
+    }
+    get value() {
+        return this.data;
+    }
+    set value(v) {
+        this.data = v;
+    }
+}
+const store = new StateObject("Santi");
+console.log(store.value);
+store.value = "Samu";
+// We can specify the type that are we going to pass to the object
+const myState = new StateObject("");

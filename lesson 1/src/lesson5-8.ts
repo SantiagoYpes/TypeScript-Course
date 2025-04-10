@@ -202,3 +202,78 @@ const monthlyIncomes : Incomes ={
 for (const stream in monthlyIncomes){
     console.log(`${stream}: ${monthlyIncomes[stream as keyof Incomes]}`)
 }
+
+
+// Generics
+// Is used when we dont know what type of arguments we are gonna receive when a function is called
+const isObj = <T>(arg: T): boolean =>{
+    return (typeof arg === 'object' && !Array.isArray(arg) && arg !== null)
+}
+
+const isTrue = <T>(arg: T):{arg: T, is:boolean} =>{
+    if (Array.isArray(arg) && !arg.length) {
+        return {arg, is:false}
+    }
+    if (isObj(arg) && Object.keys(arg as keyof T).length) {
+        return {arg, is: false}
+    }
+    return {arg, is: !!arg}
+}
+
+//Another way with interfaces
+interface BoolCheck<T> {
+    arg : T,
+    is: boolean
+}
+
+const boolCheck = <T>(arg: T):BoolCheck<T> =>{
+    if (Array.isArray(arg) && !arg.length) {
+        return {arg, is:false}
+    }
+    if (isObj(arg) && Object.keys(arg as keyof T).length) {
+        return {arg, is: false}
+    }
+    return {arg, is: !!arg}
+}
+
+
+interface HasID{
+    id: number
+}
+
+const processUser = <T extends HasID> (user : T):T=>{
+    // Logic to process
+    return user
+}
+// Here we dont have problems because there is a property id
+console.log(processUser ({user: 'Santi', id:123}))
+
+//Now we have problems because id property is missing
+//console.log(processUser({user:'Daniel'}))
+
+const getUsersProperties= <T extends HasID, K extends keyof T> (users:T[], key:K):T[K][]=>{
+    return users.map(user => user[key])
+}
+
+//Example with class
+
+class StateObject<T>{
+    private data:T
+    constructor(value:T){
+        this.data = value
+    }
+    
+    public get value() : T {
+        return this.data
+    }
+    
+    public set value(v : T) {
+        this.data = v;
+    }
+}
+
+const store = new StateObject("Santi")
+console.log(store.value)
+store.value = "Samu"
+// We can specify the type that are we going to pass to the object
+const myState = new StateObject<(string|number|boolean)>("")
