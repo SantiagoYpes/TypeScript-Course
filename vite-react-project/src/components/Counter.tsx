@@ -1,4 +1,4 @@
-import {  ReactElement, ReactNode } from "react";
+import {  ReactNode } from "react";
 import { UseCounter, UseCounterText } from "../context/CounterContext";
 type ChildrenType ={
     children: (num: number) =>ReactNode
