@@ -1,8 +1,9 @@
-import Heading from "./components/Heading";
-import Section from "./components/Section";
+//import Heading from "./components/Heading";
+//import Section from "./components/Section";
 import Counter from "./components/Counter";
-import List from "./components/List";
+//import List from "./components/List";
 import { useState, useEffect, useCallback, useMemo, useRef } from "react";
+import { CounterProvider, initState } from "./context/CounterContext";
 
 interface User{
   id: number,
@@ -49,12 +50,9 @@ function App() {
 
   return (
     <>
-    
-
-    <h1>Other counter {count}</h1>
-    <button onClick={addTwo}></button>
-    <h1>{result}</h1>
-    <input ref={inputRefer} type="text" />
+    <CounterProvider count={initState.count} text={initState.text}>
+      <Counter>{(num:number) => <>Current Cunter is: {num}</>}</Counter>
+    </CounterProvider>
     </>
   )
 }
